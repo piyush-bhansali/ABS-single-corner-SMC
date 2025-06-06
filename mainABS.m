@@ -171,7 +171,7 @@ switch manoeuvre_type
 end
 
 % Run simulation
-sim( 'ABS_contDyn_model_COMPLETE' );
+sim( 'ABS_contDyn_model' );
 
 % Extract simulation time
 simTime = ABS.v.Time;
