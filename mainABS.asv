@@ -31,7 +31,14 @@ auxdata.J   = 1;     % [kg m^2] Wheel inertia
 
 %smc parameters
 smc.k1 = 50;
-smc.rho = 0.2;
+%smc.rho = 2.5;
+
+% RNN parameters from the paper
+rnn.eta1 = 30;    % Learning rate for alpha
+rnn.eta2 = 1;     % Learning rate for v
+rnn.eta3 = 1;     % Learning rate for w
+rnn.eta4 = 1;     % Learning rate for r
+rnn.eta5 = ;
 
 tau_delay   = 10e-3; % [ms]     Delay of the actuation system (caliper)
 omega_act   = 70;    % [rad/s]  Bandwidth of the actuation system (caliper)
@@ -62,22 +69,6 @@ Tb_max = 1500; % [Nm]
 % Braking torque rate
 k = 5e3; % [Nm/s^2]
 
-% Parameters for the ABS State Machine
-rho_off    = 0.9;  % [-]   Scaling factor for the controller braking torque to
-                   %       turn OFF the ABS
-rho_on     = 1.01; % [-]   Scaling factor for the controller braking torque to
-                   %       turn ON the ABS
-rho        = 0.97; % [-]   Scaling factor for the low pass filter braking torque
-lambda1_th = 0.02;  % [-]   Right side of the longitudinal slip activation 
-                   %       interval
-lambda2_th = 0.01;  % [-]   Left side of the longitudinal slip activation 
-                   %       interval
-Tb_dot_max = k;    % [Nm]  Maximum braking torque rate
-v_on       = -1;  % [m/s] Threshold to turn ON the ABS in high speed or low
-                   %       speed mode
-hv         = 0.5;  % [m/s] Threshold to switch between high speed OFF and low 
-                   %       speed OFF
-v_stop     = -1;  % [m/s] Threshold to turn the ABS OFF in the low speed mode
 
 %-------------------------------------------------------------------------------
 %% Plot the friction coefficients at different road conditions

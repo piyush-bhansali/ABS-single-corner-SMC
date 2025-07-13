@@ -30,8 +30,15 @@ auxdata.m   = 225;   % [kg]     Single corner mass
 auxdata.J   = 1;     % [kg m^2] Wheel inertia
 
 %smc parameters
-smc.k1 = 50;
-smc.rho = 0.2;
+smc.k1 = 200;
+% smc.rho = 2.5;
+
+% RNN parameters from the paper
+rnn.eta1 = 10;    % Learning rate for alpha
+rnn.eta2 = 1;     % Learning rate for v
+rnn.eta3 = 1;     % Learning rate for w
+rnn.eta4 = 1;     % Learning rate for r
+rnn.eta5 = 0.5;
 
 tau_delay   = 10e-3; % [ms]     Delay of the actuation system (caliper)
 omega_act   = 70;    % [rad/s]  Bandwidth of the actuation system (caliper)
