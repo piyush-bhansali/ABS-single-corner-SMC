@@ -1,4 +1,4 @@
-1%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
 %% Initialization
 %-------------------------------------------------------------------------------
 
@@ -31,14 +31,16 @@ auxdata.J   = 1;     % [kg m^2] Wheel inertia
 
 %smc parameters
 smc.k1 = 200;
-% smc.rho = 2.5;
+% smc.phi = 0.05;
+% smc.rho = 5;
+
 
 % RNN parameters from the paper
-rnn.eta1 = 10;    % Learning rate for alpha
-rnn.eta2 = 1;     % Learning rate for v
-rnn.eta3 = 1;     % Learning rate for w
-rnn.eta4 = 1;     % Learning rate for r
-rnn.eta5 = 0.5;
+rnn.eta1 = 30;    % Learning rate for alpha
+rnn.eta2 = 0.05;     % Learning rate for v
+rnn.eta3 = 0.05;     % Learning rate for w
+rnn.eta4 = 0.05;     % Learning rate for r
+rnn.eta5 = 0.1;
 
 tau_delay   = 10e-3; % [ms]     Delay of the actuation system (caliper)
 omega_act   = 70;    % [rad/s]  Bandwidth of the actuation system (caliper)
@@ -120,6 +122,9 @@ switch manoeuvre_type
         output_manoeuvre = [0, 0, ...
                             Tb_max, Tb_max];
 
+        lambda_required = [0, 0, ...
+                            0.1, 0.1];
+
         % Times where the vehicle starts braking
         brake_times      = [1];
 
@@ -138,6 +143,11 @@ switch manoeuvre_type
                             0, 0,           ...
                             Tb_max, Tb_max];
 
+        lambda_required = [0, 0,           ...
+                            0.1, 0.1, ...
+                            0, 0,           ...
+                            0.1, 0.1];
+
         % Times where the vehicle starts braking
         brake_times      = [1, 2.5];
 
@@ -153,6 +163,10 @@ switch manoeuvre_type
         output_manoeuvre = [0, 0,           ...
                             Tb_max, Tb_max, ...
                             Tb_max - 200, Tb_max - 200];
+
+        lambda_required = [0, 0,           ...
+                            0.1, 0.1, ...
+                            0.1, 0.1];
 
         % Times where the vehicle starts braking
         brake_times      = [1, 2];
