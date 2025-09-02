@@ -859,7 +859,7 @@ static void mdl_setup_runtime_resources_c4_ABS_contDyn_model
   covrtEmlInitFcn(chartInstance->c4_covrtInstance, "", 4U, 0U, 1U, 0U, 1U, 0U,
                   1U, 0U, 1U, 0U, 0U, 0U);
   covrtEmlFcnInitFcn(chartInstance->c4_covrtInstance, 4U, 0U, 0U,
-                     "c4_ABS_contDyn_model", 0, -1, 2651);
+                     "c4_ABS_contDyn_model", 0, -1, 2655);
   covrtEmlSaturationInitFcn(chartInstance->c4_covrtInstance, 4U, 0U, 0U, 377, -1,
     391);
   covrtEmlIfInitFcn(chartInstance->c4_covrtInstance, 4U, 0U, 0U, 224, 247, -1,
@@ -897,10 +897,6 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
     NULL                               /* prev */
   };
 
-  const mxArray *c4_l_y = NULL;
-  const mxArray *c4_n_y = NULL;
-  const mxArray *c4_p_y = NULL;
-  const mxArray *c4_q_y = NULL;
   real_T c4_A[25];
   real_T c4_B[25];
   real_T c4_C[25];
@@ -927,6 +923,7 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
   real_T c4_b_x;
   real_T c4_b_y;
   real_T c4_c_a;
+  real_T c4_c_b;
   real_T c4_c_s;
   real_T c4_c_x;
   real_T c4_c_y;
@@ -939,7 +936,6 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
   real_T c4_d6;
   real_T c4_d7;
   real_T c4_d_a;
-  real_T c4_d_b;
   real_T c4_d_x;
   real_T c4_d_y;
   real_T c4_dr;
@@ -973,18 +969,18 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
   real_T c4_l_x;
   real_T c4_m_a;
   real_T c4_m_x;
+  real_T c4_m_y;
   real_T c4_n_a;
+  real_T c4_n_y;
   real_T c4_net_k;
   real_T c4_o_a;
   real_T c4_o_y;
   real_T c4_p_a;
   real_T c4_q_a;
   real_T c4_r_a;
-  real_T c4_r_y;
   real_T c4_recurrent_term;
   real_T c4_s0;
   real_T c4_s_a;
-  real_T c4_s_y;
   real_T c4_t_a;
   real_T c4_u_a;
   real_T c4_v_a;
@@ -996,8 +992,8 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
   int32_T c4_iv[2];
   int32_T c4_iv1[2];
   int32_T c4_b_loop_ub;
-  int32_T c4_c_b;
   int32_T c4_c_k;
+  int32_T c4_d_b;
   int32_T c4_d_k;
   int32_T c4_e_k;
   int32_T c4_exitg1;
@@ -1071,8 +1067,8 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
   int32_T c4_i8;
   int32_T c4_i9;
   int32_T c4_k;
+  int32_T c4_l_y;
   int32_T c4_loop_ub;
-  int32_T c4_m_y;
   int32_T c4_mti;
   int32_T c4_prevEpochTime;
   int32_T c4_t;
@@ -1245,36 +1241,36 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
     chartInstance->c4_v_hat[4] = 1.0;
     chartInstance->c4_v_hat[0] = -1.0;
     for (c4_c_k = 0; c4_c_k < 3; c4_c_k++) {
-      c4_c_b = c4_c_k + 2;
-      c4_m_y = (c4_c_b << 1) - 6;
-      chartInstance->c4_v_hat[c4_c_k + 1] = (real_T)c4_m_y * 0.25;
+      c4_d_b = c4_c_k + 2;
+      c4_l_y = (c4_d_b << 1) - 6;
+      chartInstance->c4_v_hat[c4_c_k + 1] = (real_T)c4_l_y * 0.25;
     }
 
     chartInstance->c4_v_hat[2] = 0.0;
     chartInstance->c4_v_hat_not_empty = true;
     c4_b_st.site = &c4_c_emlrtRSI;
     c4_rand(chartInstance, &c4_b_st, c4_dv1);
-    for (c4_i37 = 0; c4_i37 < 5; c4_i37++) {
-      chartInstance->c4_w_hat[c4_i37] = c4_dv1[c4_i37];
-    }
-
-    for (c4_i38 = 0; c4_i38 < 5; c4_i38++) {
-      chartInstance->c4_w_hat[c4_i38] *= 0.1;
-    }
-
     for (c4_i40 = 0; c4_i40 < 5; c4_i40++) {
-      chartInstance->c4_w_hat[c4_i40]++;
+      chartInstance->c4_w_hat[c4_i40] = c4_dv1[c4_i40];
+    }
+
+    for (c4_i42 = 0; c4_i42 < 5; c4_i42++) {
+      chartInstance->c4_w_hat[c4_i42] *= 0.1;
+    }
+
+    for (c4_i43 = 0; c4_i43 < 5; c4_i43++) {
+      chartInstance->c4_w_hat[c4_i43]++;
     }
 
     chartInstance->c4_w_hat_not_empty = true;
     c4_b_st.site = &c4_d_emlrtRSI;
     c4_randn(chartInstance, &c4_b_st, c4_dv2);
-    for (c4_i43 = 0; c4_i43 < 5; c4_i43++) {
-      chartInstance->c4_r_hat[c4_i43] = c4_dv2[c4_i43];
+    for (c4_i45 = 0; c4_i45 < 5; c4_i45++) {
+      chartInstance->c4_r_hat[c4_i45] = c4_dv2[c4_i45];
     }
 
-    for (c4_i44 = 0; c4_i44 < 5; c4_i44++) {
-      chartInstance->c4_r_hat[c4_i44] *= 0.01;
+    for (c4_i46 = 0; c4_i46 < 5; c4_i46++) {
+      chartInstance->c4_r_hat[c4_i46] *= 0.01;
     }
 
     chartInstance->c4_r_hat_not_empty = true;
@@ -1357,38 +1353,38 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
       emlrtIntegerCheckR2012b(c4_b_k, &c4_emlrtDCI, &c4_st);
     }
 
-    c4_i33 = (int32_T)c4_b_k;
-    if ((c4_i33 < 1) || (c4_i33 > 5)) {
-      emlrtDynamicBoundsCheckR2012b(c4_i33, 1, 5, &c4_emlrtBCI, &c4_st);
+    c4_i35 = (int32_T)c4_b_k;
+    if ((c4_i35 < 1) || (c4_i35 > 5)) {
+      emlrtDynamicBoundsCheckR2012b(c4_i35, 1, 5, &c4_emlrtBCI, &c4_st);
     }
 
-    chartInstance->c4_theta_hat[c4_i33 - 1] = c4_m_x;
+    chartInstance->c4_theta_hat[c4_i35 - 1] = c4_m_x;
     c4_b_st.site = &c4_f_emlrtRSI;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_l_emlrtDCI, &c4_b_st);
     }
 
-    c4_i36 = (int32_T)c4_b_k;
-    if ((c4_i36 < 1) || (c4_i36 > 5)) {
-      emlrtDynamicBoundsCheckR2012b(c4_i36, 1, 5, &c4_l_emlrtBCI, &c4_b_st);
+    c4_i38 = (int32_T)c4_b_k;
+    if ((c4_i38 < 1) || (c4_i38 > 5)) {
+      emlrtDynamicBoundsCheckR2012b(c4_i38, 1, 5, &c4_l_emlrtBCI, &c4_b_st);
     }
 
-    c4_o_a = chartInstance->c4_w_hat[c4_i36 - 1];
+    c4_o_a = chartInstance->c4_w_hat[c4_i38 - 1];
     c4_p_a = c4_o_a;
     c4_q_a = c4_p_a;
     c4_r_a = c4_q_a;
-    c4_o_y = c4_r_a * c4_r_a;
+    c4_m_y = c4_r_a * c4_r_a;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_m_emlrtDCI, &c4_st);
     }
 
-    c4_i42 = (int32_T)c4_b_k;
-    if ((c4_i42 < 1) || (c4_i42 > 5)) {
-      emlrtDynamicBoundsCheckR2012b(c4_i42, 1, 5, &c4_m_emlrtBCI, &c4_st);
+    c4_i44 = (int32_T)c4_b_k;
+    if ((c4_i44 < 1) || (c4_i44 > 5)) {
+      emlrtDynamicBoundsCheckR2012b(c4_i44, 1, 5, &c4_m_emlrtBCI, &c4_st);
     }
 
-    c4_b_dv = -2.0 * c4_o_y * ((c4_x + c4_recurrent_term) -
-      chartInstance->c4_v_hat[c4_i42 - 1]);
+    c4_b_dv = -2.0 * c4_m_y * ((c4_x + c4_recurrent_term) -
+      chartInstance->c4_v_hat[c4_i44 - 1]);
     c4_b_st.site = &c4_g_emlrtRSI;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_n_emlrtDCI, &c4_b_st);
@@ -1403,7 +1399,7 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
     c4_t_a = c4_s_a;
     c4_u_a = c4_t_a;
     c4_v_a = c4_u_a;
-    c4_r_y = c4_v_a * c4_v_a;
+    c4_n_y = c4_v_a * c4_v_a;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_o_emlrtDCI, &c4_st);
     }
@@ -1413,7 +1409,7 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
       emlrtDynamicBoundsCheckR2012b(c4_i48, 1, 5, &c4_o_emlrtBCI, &c4_st);
     }
 
-    c4_dw = 2.0 * chartInstance->c4_w_hat[c4_i48 - 1] * c4_r_y;
+    c4_dw = 2.0 * chartInstance->c4_w_hat[c4_i48 - 1] * c4_n_y;
     c4_b_st.site = &c4_h_emlrtRSI;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_p_emlrtDCI, &c4_b_st);
@@ -1428,7 +1424,7 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
     c4_x_a = c4_w_a;
     c4_y_a = c4_x_a;
     c4_ab_a = c4_y_a;
-    c4_s_y = c4_ab_a * c4_ab_a;
+    c4_o_y = c4_ab_a * c4_ab_a;
     if (c4_b_k != (real_T)(int32_T)muDoubleScalarFloor(c4_b_k)) {
       emlrtIntegerCheckR2012b(c4_b_k, &c4_q_emlrtDCI, &c4_st);
     }
@@ -1447,7 +1443,7 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
       emlrtDynamicBoundsCheckR2012b(c4_i51, 1, 5, &c4_r_emlrtBCI, &c4_st);
     }
 
-    c4_dr = 2.0 * c4_s_y * ((c4_x + c4_recurrent_term) - chartInstance->
+    c4_dr = 2.0 * c4_o_y * ((c4_x + c4_recurrent_term) - chartInstance->
       c4_v_hat[c4_i50 - 1]) * c4_theta_previous[c4_i51 - 1];
     c4_d4 = (c4_b_k - 1.0) + 1.0;
     c4_d5 = c4_b_k;
@@ -1692,53 +1688,33 @@ static void sf_gateway_c4_ABS_contDyn_model(SFc4_ABS_contDyn_modelInstanceStruct
     chartInstance->c4_alpha_hat[c4_i30] += c4_theta_previous[c4_i30];
   }
 
-  sf_mex_printf("%s =\\n", "alpha_hat");
-  c4_l_y = NULL;
-  sf_mex_assign(&c4_l_y, sf_mex_create("y", chartInstance->c4_alpha_hat, 0, 0U,
-    1, 0U, 1, 5), false);
-  sf_mex_call(&c4_st, NULL, "disp", 0U, 1U, 14, c4_l_y);
   c4_b_b = c4_b_dt;
+  for (c4_i33 = 0; c4_i33 < 5; c4_i33++) {
+    c4_v_hat_dot[c4_i33] *= c4_b_b;
+  }
+
   for (c4_i34 = 0; c4_i34 < 5; c4_i34++) {
-    c4_v_hat_dot[c4_i34] *= c4_b_b;
+    chartInstance->c4_v_hat[c4_i34] += c4_v_hat_dot[c4_i34];
   }
 
-  for (c4_i35 = 0; c4_i35 < 5; c4_i35++) {
-    chartInstance->c4_v_hat[c4_i35] += c4_v_hat_dot[c4_i35];
+  c4_c_b = c4_b_dt;
+  for (c4_i36 = 0; c4_i36 < 5; c4_i36++) {
+    c4_w_hat_dot[c4_i36] *= c4_c_b;
   }
 
-  sf_mex_printf("%s =\\n", "v_hat");
-  c4_n_y = NULL;
-  sf_mex_assign(&c4_n_y, sf_mex_create("y", chartInstance->c4_v_hat, 0, 0U, 1,
-    0U, 2, 1, 5), false);
-  sf_mex_call(&c4_st, NULL, "disp", 0U, 1U, 14, c4_n_y);
-  c4_d_b = c4_b_dt;
+  for (c4_i37 = 0; c4_i37 < 5; c4_i37++) {
+    chartInstance->c4_w_hat[c4_i37] += c4_w_hat_dot[c4_i37];
+  }
+
+  c4_e_b = c4_b_dt;
   for (c4_i39 = 0; c4_i39 < 5; c4_i39++) {
-    c4_w_hat_dot[c4_i39] *= c4_d_b;
+    c4_r_hat_dot[c4_i39] *= c4_e_b;
   }
 
   for (c4_i41 = 0; c4_i41 < 5; c4_i41++) {
-    chartInstance->c4_w_hat[c4_i41] += c4_w_hat_dot[c4_i41];
+    chartInstance->c4_r_hat[c4_i41] += c4_r_hat_dot[c4_i41];
   }
 
-  sf_mex_printf("%s =\\n", "w_hat");
-  c4_p_y = NULL;
-  sf_mex_assign(&c4_p_y, sf_mex_create("y", chartInstance->c4_w_hat, 0, 0U, 1,
-    0U, 2, 1, 5), false);
-  sf_mex_call(&c4_st, NULL, "disp", 0U, 1U, 14, c4_p_y);
-  c4_e_b = c4_b_dt;
-  for (c4_i45 = 0; c4_i45 < 5; c4_i45++) {
-    c4_r_hat_dot[c4_i45] *= c4_e_b;
-  }
-
-  for (c4_i46 = 0; c4_i46 < 5; c4_i46++) {
-    chartInstance->c4_r_hat[c4_i46] += c4_r_hat_dot[c4_i46];
-  }
-
-  sf_mex_printf("%s =\\n", "r_hat");
-  c4_q_y = NULL;
-  sf_mex_assign(&c4_q_y, sf_mex_create("y", chartInstance->c4_r_hat, 0, 0U, 1,
-    0U, 1, 5), false);
-  sf_mex_call(&c4_st, NULL, "disp", 0U, 1U, 14, c4_q_y);
   *chartInstance->c4_d_hat = c4_b_d_hat;
   covrtSigUpdateFcn(chartInstance->c4_covrtInstance, 2U,
                     *chartInstance->c4_d_hat);
@@ -2930,10 +2906,10 @@ static void init_simulink_io_address(SFc4_ABS_contDyn_modelInstanceStruct
 /* SFunction Glue Code */
 void sf_c4_ABS_contDyn_model_get_check_sum(mxArray *plhs[])
 {
-  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(2246781728U);
-  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(1583057778U);
-  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(2478492064U);
-  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(3495333990U);
+  ((real_T *)mxGetPr((plhs[0])))[0] = (real_T)(1137688282U);
+  ((real_T *)mxGetPr((plhs[0])))[1] = (real_T)(3481751809U);
+  ((real_T *)mxGetPr((plhs[0])))[2] = (real_T)(111150291U);
+  ((real_T *)mxGetPr((plhs[0])))[3] = (real_T)(2458225426U);
 }
 
 mxArray *sf_c4_ABS_contDyn_model_third_party_uses_info(void)
@@ -2994,7 +2970,7 @@ static const mxArray *sf_get_sim_state_info_c4_ABS_contDyn_model(void)
 
 static const char* sf_get_instance_specialization(void)
 {
-  return "sJvicEHJgeZSJd2D3Vtjc9C";
+  return "s3KBFAG6C5akJVH9kMC4coC";
 }
 
 static void sf_opaque_initialize_c4_ABS_contDyn_model(void *chartInstanceVar)
@@ -3087,38 +3063,38 @@ const char* sf_c4_ABS_contDyn_model_get_post_codegen_info(void)
 {
   int i;
   const char* encStrCodegen [29] = {
-    "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",
-    "OHSKOvaP6BAdCI=",
+    "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",
+    "v0DUEpwfQ==",
     ""
   };
 
-  static char newstr [2041] = "";
+  static char newstr [2037] = "";
   newstr[0] = '\0';
   for (i = 0; i < 29; i++) {
     strcat(newstr, encStrCodegen[i]);
@@ -3131,10 +3107,10 @@ static void mdlSetWorkWidths_c4_ABS_contDyn_model(SimStruct *S)
 {
   const char* newstr = sf_c4_ABS_contDyn_model_get_post_codegen_info();
   sf_set_work_widths(S, newstr);
-  ssSetChecksum0(S,(3458620509U));
-  ssSetChecksum1(S,(3872259490U));
-  ssSetChecksum2(S,(3167044911U));
-  ssSetChecksum3(S,(4151999676U));
+  ssSetChecksum0(S,(219220073U));
+  ssSetChecksum1(S,(1666346104U));
+  ssSetChecksum2(S,(1704177895U));
+  ssSetChecksum3(S,(3146285908U));
 }
 
 static void mdlRTW_c4_ABS_contDyn_model(SimStruct *S)
