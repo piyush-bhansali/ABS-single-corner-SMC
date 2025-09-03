@@ -34,11 +34,11 @@ smc.k1 = 200;
 smc.phi = 0.05;
 %smc.rho = 5;
 
-rnn.eta1 = 25;    % Learning rate for alpha
+rnn.eta1 = 10;    % Learning rate for alpha
 rnn.eta2 = 0.05;     % Learning rate for v
 rnn.eta3 = 0.05;     % Learning rate for w
 rnn.eta4 = 0.05;     % Learning rate for r
-rnn.eta5 = 5;
+rnn.eta5 = 2;
 
 
 tau_delay   = 10e-3; % [ms]     Delay of the actuation system (caliper)
@@ -122,7 +122,7 @@ switch manoeuvre_type
                             Tb_max, Tb_max];
 
         lambda_required = [0, 0, ...
-                            0.15, 0.15];
+                            0.2, 0.2];
 
         % Times where the vehicle starts braking
         brake_times      = [1];
@@ -143,9 +143,9 @@ switch manoeuvre_type
                             Tb_max, Tb_max];
 
         lambda_required = [0, 0,           ...
-                            0.15, 0.15, ...
+                            0.2, 0.2, ...
                             0, 0,           ...
-                            0.15, 0.15];
+                            0.2, 0.2];
 
         % Times where the vehicle starts braking
         brake_times      = [1, 2.5];
@@ -164,8 +164,8 @@ switch manoeuvre_type
                             Tb_max - 200, Tb_max - 200];
 
         lambda_required = [0, 0,           ...
-                            0.15, 0.15, ...
-                            0.15, 0.15];
+                            0.2, 0.2, ...
+                            0.2, 0.2];
 
         % Times where the vehicle starts braking
         brake_times      = [1, 2];
